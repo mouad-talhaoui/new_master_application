@@ -14,7 +14,11 @@ class EtudiantAdministrateurController extends Controller
     public function index(Request $request){
         $search = $request->input("search");
         if(isset($search)){
-            $etudiants = User::where('nom', 'like', '%' . $search . '%')->paginate(10);
+            $etudiants = User::where('nom', 'like', '%' . $search . '%')
+                                ->orWhere('prenom', 'like', '%' . $search . '%')
+                                ->orWhere('cne', 'like', '%' . $search . '%')
+                                ->orWhere('cin', 'like', '%' . $search . '%')
+                                ->paginate(10);
         }else{
             $etudiants = User::paginate(10);
         }
@@ -33,7 +37,7 @@ class EtudiantAdministrateurController extends Controller
 
     $excel->import(new EtudiantsImport, $request->file('file'));
 
-    return back()->with('success', 'Importation réussie !');
+    return redirect()->route("administrateurs.etudiants.index")->with('success', 'Importation réussie !');
 
     }
 
@@ -45,5 +49,38 @@ class EtudiantAdministrateurController extends Controller
         return view('administrateurs/etudiants/import');
     }
 
+    public function edit(Request $request){
+        $id = $request->id;
+        $etudiant = User::find($id);
+        return view('administrateurs/etudiants/edit', compact("etudiant"));
+    }
 
+
+    //update
+    public function update(Request $request, $id){
+        $request->validate(
+            [
+                'nom' => 'required',
+                'prenom' => 'required',
+                'cin' => 'required',
+                'cne' => 'required',
+                'id' => 'required',
+            ],
+        );
+
+        $etudiant = User::find($id);
+        $etudiant->nom = $request->input("nom");
+        $etudiant->prenom = $request->input("prenom");
+        $etudiant->cin = $request->input("cin");
+        $etudiant->cne = $request->input("cne");
+        $etudiant->save();
+
+        return redirect()->route("administrateurs.etudiants.index");
+    }
+
+    public function delete(Request $request, $id){
+        $etudiant = User::find($id);
+        $etudiant->delete();
+        return redirect()->route('administrateurs.etudiants.index');
+    }
 }

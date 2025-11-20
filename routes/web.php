@@ -39,7 +39,12 @@ Route::middleware(["guest:web", "guest:fonctionnaire", "guest:administrateur"])-
 Route::prefix("etudiants")->name("etudiants.")->middleware(["auth:web", "guest:fonctionnaire", "guest:administrateur"])->group(function(){
     Route::get('/home', [DashboardEtudiantController::class, 'dashoard'])->name('home');
     Route::post('/logout', [AuthEtudiantController::class, 'logout'])->name('logout');
+    Route::post("rdv", [DashboardEtudiantController::class, 'rdvPost'])->name("rdv");
 
+
+    Route::prefix("rdv")->name("rdv.")->group(function(){
+        Route::get('/download', [DashboardEtudiantController::class, 'rdvDownload'])->name('download');
+    });
 });
 
 

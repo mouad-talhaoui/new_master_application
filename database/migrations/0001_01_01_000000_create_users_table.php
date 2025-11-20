@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('cne');
             $table->string('rfid')->nullable()->default(null);
             $table->boolean('isConfirmed')->default(false);
-            $table->foreignId('id_rdv')->nullable()->restrictOnDelete()->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

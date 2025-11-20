@@ -23,8 +23,7 @@ class User extends Authenticatable
         'cin',
         'cne',
         'rfid',
-        'isConfirmed',
-        'id_rdv'
+        'isConfirmed'
     ];
 
     public function filieres()
@@ -32,6 +31,10 @@ class User extends Authenticatable
             return $this->belongsToMany(Filiere::class);
         }
 
+        public function rdvs()
+{
+    return $this->belongsToMany(Rdv::class)->withTimestamps();
+}
     /**
      * The attributes that should be hidden for serialization.
      *

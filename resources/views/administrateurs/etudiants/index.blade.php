@@ -14,11 +14,12 @@
         </div>
     </div>
     <div class="m-3 p-4"> 
-    <form class="flex items-center space-x-3">
+    <form class="flex items-center space-x-3" method="get" action="{{ route('administrateurs.etudiants.index') }}">
     <!-- Input -->
     <input 
         type="text" 
         placeholder="Search..." 
+        name="search"
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
 
